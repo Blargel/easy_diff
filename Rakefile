@@ -15,7 +15,7 @@ Jeweler::Tasks.new do |gem|
   gem.name = "easy_diff"
   gem.homepage = "http://github.com/Blargel/easy_diff"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
+  gem.summary = %Q{Recursive diff, merge, and unmerge for hashes and arrays.}
   gem.description = %Q{TODO: longer description of your gem}
   gem.email = "LargeBagel@gmail.com"
   gem.authors = ["Abner Qian"]
