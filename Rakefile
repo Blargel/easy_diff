@@ -16,7 +16,9 @@ Jeweler::Tasks.new do |gem|
   gem.homepage = "http://github.com/Blargel/easy_diff"
   gem.license = "MIT"
   gem.summary = %Q{Recursive diff, merge, and unmerge for hashes and arrays.}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.description = %Q{Easy Diff enhances the functionality of Hash, allowing recursive diff, merge, and unmerge of arbitrarily constructed hashes.
+  This is perfect for people who need to do diffs on not only plain text files but also data as Hash or JSON objects. Unmerge
+  is included with diff and merge to more easily allow versioning of arbitrary data.}
   gem.email = "LargeBagel@gmail.com"
   gem.authors = ["Abner Qian"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,
