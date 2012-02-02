@@ -119,6 +119,26 @@ Using Hash#easy_unmerge! will modify self instead of returning a new hash.
   #     :some_str => "bla"
   #   }
   
+=== Hash#easy_clone
+
+Performs a deep clone on a hash
+
+  original = {
+    :tags => ['b', 'c', 'd'],
+    :pos => {:x => '3', :y => '2'}
+  }
+  
+  new = original.easy_clone
+  
+  new[:tags] << 'e'
+  new[:pos][:y] = '1'
+  
+  # The original hash will still look like this:
+  # original = {
+  #   :tags => ['b', 'c', 'd'],
+  #   :pos => {:x => '3', :y => '2'}
+  # }
+
 == Contributing to easy_diff
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet

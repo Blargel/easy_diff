@@ -62,6 +62,14 @@ describe EasyDiff do
      :extra_removed => "bye",
      :extra_added => "hi"
    }
+   @original.should == {
+      :tags => ['a', 'b', 'c'],
+      :pos => {:x => '1', :y => '2'},
+      :some_str => "bla",
+      :some_int => 1,
+      :some_bool => false,
+      :extra_removed => "bye"
+    }
   end
   
   it "should stay the same" do
