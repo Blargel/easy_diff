@@ -78,4 +78,27 @@ describe EasyDiff do
     original = unmerged.easy_merge removed
     original.should == @original
   end
+  
+  it "should do a deep clone" do
+    cloned = @original.easy_clone
+    cloned.should == @original
+    cloned[:tags] << 'd'
+    cloned[:pos][:x] = '2'
+    cloned.should == {
+      :tags => ['a', 'b', 'c', 'd'],
+      :pos => {:x => '2', :y => '2'},
+      :some_str => "bla",
+      :some_int => 1,
+      :some_bool => false,
+      :extra_removed => "bye"
+    }
+    @original.should == {
+      :tags => ['a', 'b', 'c'],
+      :pos => {:x => '1', :y => '2'},
+      :some_str => "bla",
+      :some_int => 1,
+      :some_bool => false,
+      :extra_removed => "bye"
+    }
+  end
 end
