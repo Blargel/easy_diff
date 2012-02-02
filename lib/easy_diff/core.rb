@@ -62,5 +62,9 @@ module EasyDiff
       end
       original
     end
+    
+    def self.easy_clone(original)
+      Marshal::load(Marshal.dump(original))
+    end
   end
 end
