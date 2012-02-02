@@ -13,11 +13,11 @@ module EasyDiff
     end
   
     def easy_merge(other)
-      self.dup.easy_merge!(other)
+      self.clone.easy_merge!(other)
     end
   
     def easy_unmerge(other)
-      self.dup.easy_unmerge!(other)
+      self.clone.easy_unmerge!(other)
     end
   end
 end
