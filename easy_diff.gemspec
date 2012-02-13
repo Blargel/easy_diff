@@ -4,16 +4,14 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{easy_diff}
-  s.version = "0.0.1"
+  s.name = "easy_diff"
+  s.version = "0.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Abner Qian"]
-  s.date = %q{2011-03-03}
-  s.description = %q{Easy Diff enhances the functionality of Hash, allowing recursive diff, merge, and unmerge of arbitrarily constructed hashes.
-  This is perfect for people who need to do diffs on not only plain text files but also data as Hash or JSON objects. Unmerge
-  is included with diff and merge to more easily allow versioning of arbitrary data.}
-  s.email = %q{LargeBagel@gmail.com}
+  s.date = "2012-02-13"
+  s.description = "Easy Diff enhances the functionality of Hash, allowing recursive diff, merge, and unmerge of arbitrarily constructed hashes.\n  This is perfect for people who need to do diffs on not only plain text files but also data as Hash or JSON objects. Unmerge\n  is included with diff and merge to more easily allow versioning of arbitrary data."
+  s.email = "LargeBagel@gmail.com"
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.rdoc"
@@ -27,6 +25,7 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "VERSION",
+    "easy_diff.gemspec",
     "lib/easy_diff.rb",
     "lib/easy_diff/core.rb",
     "lib/easy_diff/hash_ext.rb",
@@ -34,11 +33,11 @@ Gem::Specification.new do |s|
     "spec/easy_diff_spec.rb",
     "spec/spec_helper.rb"
   ]
-  s.homepage = %q{http://github.com/Blargel/easy_diff}
+  s.homepage = "http://github.com/Blargel/easy_diff"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.5.2}
-  s.summary = %q{Recursive diff, merge, and unmerge for hashes and arrays.}
+  s.rubygems_version = "1.8.12"
+  s.summary = "Recursive diff, merge, and unmerge for hashes and arrays."
   s.test_files = [
     "spec/easy_diff_spec.rb",
     "spec/spec_helper.rb"
@@ -48,20 +47,20 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_development_dependency(%q<rspec>, ["~> 2.3.0"])
+      s.add_development_dependency(%q<rspec>, ["~> 2.4.0"])
       s.add_development_dependency(%q<yard>, ["~> 0.6.0"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.5.2"])
       s.add_development_dependency(%q<rcov>, [">= 0"])
     else
-      s.add_dependency(%q<rspec>, ["~> 2.3.0"])
+      s.add_dependency(%q<rspec>, ["~> 2.4.0"])
       s.add_dependency(%q<yard>, ["~> 0.6.0"])
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
       s.add_dependency(%q<rcov>, [">= 0"])
     end
   else
-    s.add_dependency(%q<rspec>, ["~> 2.3.0"])
+    s.add_dependency(%q<rspec>, ["~> 2.4.0"])
     s.add_dependency(%q<yard>, ["~> 0.6.0"])
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
