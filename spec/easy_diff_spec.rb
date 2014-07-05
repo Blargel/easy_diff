@@ -101,4 +101,26 @@ describe EasyDiff do
       :extra_removed => "bye"
     }
   end
+
+  it "should not show empty hashes or arrays as diffs" do
+    @modified[:tags] = @original[:tags]
+    @modified[:pos] = @original[:pos]
+    @removed.delete :pos
+    @removed.delete :tags
+    @added.delete :pos
+    @added.delete :tags
+    removed, added = @original.easy_diff @modified
+    removed.should == @removed
+    added.should == @added
+  end
+
+  it "should show added empty hashes as a diff" do
+    @original[:empty_array] = []
+    @modified[:empty_hash] = {}
+    @removed[:empty_array] = []
+    @added[:empty_hash] = {}
+    removed, added = @original.easy_diff @modified
+    removed.should == @removed
+    added.should == @added
+  end
 end
