@@ -10,7 +10,7 @@ describe EasyDiff do
       :some_bool => false,
       :extra_removed => "bye"
     }
-    
+
     @modified = {
       :tags => ['b', 'c', 'd'],
       :pos => {:x => '3', :y => '2'},
@@ -19,7 +19,7 @@ describe EasyDiff do
       :some_bool => true,
       :extra_added => "hi"
     }
-    
+
     @removed = {
       :tags => ['a'],
       :pos => {:x => '1'},
@@ -27,7 +27,7 @@ describe EasyDiff do
       :some_bool => false,
       :extra_removed => "bye"
     }
-    
+
     @added = {
       :tags => ['d'],
       :pos => {:x => '3'},
@@ -41,7 +41,7 @@ describe EasyDiff do
     removed.should == @removed
     added.should == @added
   end
-  
+
   it "should compute easy_unmerge" do
     unmerged = @modified.easy_unmerge @added
     unmerged.should == {
@@ -50,7 +50,7 @@ describe EasyDiff do
       :some_str => "bla"
     }
   end
-  
+
   it "should compute easy_merge" do
    merged = @original.easy_merge @added
    merged.should == {
@@ -71,14 +71,14 @@ describe EasyDiff do
       :extra_removed => "bye"
     }
   end
-  
+
   it "should stay the same" do
     removed, added = @original.easy_diff @modified
     unmerged = @modified.easy_unmerge added
     original = unmerged.easy_merge removed
     original.should == @original
   end
-  
+
   it "should do a deep clone" do
     cloned = @original.easy_clone
     cloned.should == @original
@@ -122,5 +122,13 @@ describe EasyDiff do
     removed, added = @original.easy_diff @modified
     removed.should == @removed
     added.should == @added
+  end
+
+  it "should only check empty? on Hashes and Arrays" do
+    original = {:possibly_empty_string => ""}
+    modified = {:possibly_empty_string => "not empty"}
+    removed, added = original.easy_diff modified
+    removed.should == {:possibly_empty_string => ""}
+    added.should == {:possibly_empty_string => "not empty"}
   end
 end
