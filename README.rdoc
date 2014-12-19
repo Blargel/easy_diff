@@ -7,7 +7,7 @@ is included with diff and merge to more easily allow versioning of arbitrary dat
 == Install
 
   gem install easy_diff
-  
+
 == Examples
 
 === Hash#easy_diff
@@ -23,7 +23,7 @@ The first contains what has to be removed from self to create the second hash. T
     :some_bool => false,
     :extra_removed => "bye"
   }
-  
+
   modified = {
     :tags => ['b', 'c', 'd'],
     :pos => {:x => '3', :y => '2'},
@@ -32,9 +32,9 @@ The first contains what has to be removed from self to create the second hash. T
     :some_bool => true,
     :extra_added => "hi"
   }
-  
+
   removed, added = original.easy_diff modified
-  
+
   # The removed and added hashes should contain the following:
   # removed = {
   #     :tags => ['a'],
@@ -43,7 +43,7 @@ The first contains what has to be removed from self to create the second hash. T
   #     :some_bool => false,
   #     :extra_removed => "bye"
   #   }
-  #   
+  #
   #   added = {
   #     :tags => ['d'],
   #     :pos => {:x => '3'},
@@ -51,7 +51,7 @@ The first contains what has to be removed from self to create the second hash. T
   #     :some_bool => true,
   #     :extra_added => "hi"
   #   }
-  
+
 === Hash#easy_merge
 
 Takes a hash and recursively merges it with self. Arrays are merged by the union operation and then sorted.
@@ -65,7 +65,7 @@ Using Hash#easy_merge! will modify self instead of returning a new hash.
     :some_bool => false,
     :extra_removed => "bye"
   }
-  
+
   extra = {
     :tags => ['d'],
     :pos => {:x => '3'},
@@ -73,7 +73,7 @@ Using Hash#easy_merge! will modify self instead of returning a new hash.
     :some_bool => true,
     :extra_added => "hi"
   }
-  
+
   merged = original.easy_merge extra
 
   # The merged hash should look like this:
@@ -86,7 +86,7 @@ Using Hash#easy_merge! will modify self instead of returning a new hash.
   #   :extra_removed => "bye",
   #   :extra_added => "hi"
   # }
-  
+
 === Hash#easy_unmerge
 
 Takes a hash and recursively unmerges it with self. By unmerging, I mean it will remove all matching values from
@@ -101,7 +101,7 @@ Using Hash#easy_unmerge! will modify self instead of returning a new hash.
     :some_bool => true,
     :extra_added => "hi"
   }
-  
+
   extra = {
     :tags => ['d'],
     :pos => {:x => '3'},
@@ -109,7 +109,7 @@ Using Hash#easy_unmerge! will modify self instead of returning a new hash.
     :some_bool => true,
     :extra_added => "hi"
   }
-  
+
   unmerged = original.easy_unmerge extra
 
   # The unmerged hash should look like this:
@@ -118,7 +118,7 @@ Using Hash#easy_unmerge! will modify self instead of returning a new hash.
   #     :pos => {:y => '2'},
   #     :some_str => "bla"
   #   }
-  
+
 === Hash#easy_clone
 
 Performs a deep clone on a hash
@@ -127,12 +127,12 @@ Performs a deep clone on a hash
     :tags => ['b', 'c', 'd'],
     :pos => {:x => '3', :y => '2'}
   }
-  
+
   new = original.easy_clone
-  
+
   new[:tags] << 'e'
   new[:pos][:y] = '1'
-  
+
   # The original hash will still look like this:
   # original = {
   #   :tags => ['b', 'c', 'd'],
@@ -140,7 +140,7 @@ Performs a deep clone on a hash
   # }
 
 == Contributing to easy_diff
- 
+
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
 * Fork the project
