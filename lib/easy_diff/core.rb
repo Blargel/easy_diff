@@ -68,7 +68,7 @@ module EasyDiff
     end
 
     def self._blank?(obj)
-      if obj.respond_to?(:empty?)
+      if obj.is_a?(Hash) || obj.is_a?(Array)
         obj.empty?
       else
         obj.nil?
