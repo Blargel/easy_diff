@@ -56,7 +56,9 @@ module EasyDiff
         added_keys.each{ |key| original[key] = easy_merge!(original[key], added[key])}
       elsif original.is_a?(Array) && added.is_a?(Array)
         original |=  added
-        original.sort!
+        original.sort_by! { |item|
+          item.is_a?(Hash) ? item.sort : item
+        }
       else
         original = added.safe_dup
       end
