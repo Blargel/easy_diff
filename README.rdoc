@@ -54,7 +54,8 @@ The first contains what has to be removed from self to create the second hash. T
 
 === Hash#easy_merge
 
-Takes a hash and recursively merges it with self. Arrays are merged by the union operation and then sorted.
+Takes a hash and recursively merges it with self. Arrays are merged by the union operation and then sorted. Arrays of Hashes are sorted by invoking +#sort+ on each Hash to make them comparable.
+
 Using Hash#easy_merge! will modify self instead of returning a new hash.
 
   original = {

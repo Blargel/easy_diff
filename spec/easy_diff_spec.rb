@@ -131,4 +131,30 @@ describe EasyDiff do
     removed.should == {:possibly_empty_string => ""}
     added.should == {:possibly_empty_string => "not empty"}
   end
+
+  it "should merge Arrays containing Hashes" do
+    original = {
+      "key" => [
+        {"c" => "1"},
+        {"a" => "2"},
+        {"a" => "1"},
+      ]
+    }
+
+    to_merge = {
+      "key" => [
+        {"b" => "2"},
+      ]
+    }
+
+    merged = original.easy_merge to_merge
+    merged.should == {
+      "key" => [
+        {"a" => "1"},
+        {"a" => "2"},
+        {"b" => "2"},
+        {"c" => "1"},
+      ]
+    }
+  end
 end
