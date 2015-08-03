@@ -1,5 +1,5 @@
-# rcov generated
-coverage
+# rcov/simplecov generated
+coverage/
 
 # rdoc generated
 rdoc
