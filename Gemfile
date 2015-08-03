@@ -9,5 +9,5 @@ group :development do
   gem "rspec", "~> 2.4.0"
   gem "yard", "~> 0.6.0"
   gem "jeweler"
-  gem "rcov", ">= 0"
+  gem "simplecov", ">= 0", require: false
 end
