@@ -132,29 +132,49 @@ describe EasyDiff do
     added.should == {:possibly_empty_string => "not empty"}
   end
 
-  it "should merge Arrays containing Hashes" do
-    original = {
-      "key" => [
-        {"c" => "1"},
-        {"a" => "2"},
-        {"a" => "1"},
-      ]
-    }
+  describe 'handling Arrays containing Hashes' do
+    let(:original) do
+      {
+        "key" => [
+          {"c" => "1"},
+          {"a" => "2"},
+          {"a" => "1"},
+        ]
+      }
+    end
 
-    to_merge = {
-      "key" => [
-        {"b" => "2"},
-      ]
-    }
+    it "should merge properly" do
+      to_merge = {
+        "key" => [
+          {"b" => "2"},
+        ]
+      }
 
-    merged = original.easy_merge to_merge
-    merged.should == {
-      "key" => [
-        {"a" => "1"},
-        {"a" => "2"},
-        {"b" => "2"},
-        {"c" => "1"},
-      ]
-    }
+      merged = original.easy_merge to_merge
+      merged.should == {
+        "key" => [
+          {"a" => "1"},
+          {"a" => "2"},
+          {"b" => "2"},
+          {"c" => "1"},
+        ]
+      }
+    end
+
+    it "should unmerge properly" do
+      to_unmerge = {
+        "key" => [
+          {"a" => "2"},
+        ]
+      }
+
+      unmerged = original.easy_unmerge to_unmerge
+      unmerged.should == {
+        "key" => [
+          {"a" => "1"},
+          {"c" => "1"},
+        ]
+      }
+    end
   end
 end
