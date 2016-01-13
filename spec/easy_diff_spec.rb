@@ -177,4 +177,41 @@ describe EasyDiff do
       }
     end
   end
+
+  describe 'handling Arrays containing Hashes with nils' do
+    let(:original) do
+      {
+        "key" => [
+          { "a" => "1", "b" => "2" },
+          { "a" => nil, "c" => "2" },
+          { "e" => "5" },
+        ]
+      }
+    end
+
+    it "should merge without errors" do
+      to_merge = {
+        "key" => [
+          { "d" => "4" },
+        ]
+      }
+      expect { original.easy_merge(to_merge) }.to_not raise_error
+    end
+
+    it "should unmerge without errors" do
+      to_unmerge = {
+        "key" => [
+          { "e" => "5" },
+        ]
+      }
+
+      unmerged = original.easy_unmerge to_unmerge
+      unmerged.should == {
+        "key" => [
+          { "a" => "1", "b" => "2" },
+          { "a" => nil, "c" => "2" },
+        ]
+      }
+    end
+  end
 end
