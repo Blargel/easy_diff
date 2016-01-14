@@ -1,0 +1,191 @@
+---
+- # Basic test cases on nested Hashes and Arrays
+  name: "simple cases with nested Hashes and Arrays"
+  original:
+    tags:
+      - "a"
+      - "b"
+      - "c"
+    pos:
+      x: "1"
+      y: "2"
+    some_str: "bla"
+    some_int: 1
+    some_bool: false
+    extra_removed: "bye"
+  modified:
+    tags:
+      - "b"
+      - "c"
+      - "d"
+    pos:
+      x: "3"
+      y: "2"
+    some_str: "bla"
+    some_int: 2
+    some_bool: true
+    extra_added: "hi"
+  expected_removed:
+    tags:
+      - "a"
+    pos:
+      x: "1"
+    some_int: 1
+    some_bool: false
+    extra_removed: "bye"
+  expected_added:
+    tags:
+      - "d"
+    pos:
+      x: "3"
+    some_int: 2
+    some_bool: true
+    extra_added: "hi"
+
+- # Test case where nil values of Hashes are expected to be preserved
+  name: "Hashes with nil values"
+  original:
+    old_nil: ~
+    new_nil: "foo"
+    still_nil: ~
+    removed_nil: ~
+  modified:
+    old_nil: "bar"
+    new_nil: ~
+    still_nil: ~
+    added_nil: ~
+  expected_removed:
+    old_nil: ~
+    new_nil: "foo"
+    removed_nil: ~
+  expected_added:
+    old_nil: "bar"
+    new_nil: ~
+    added_nil: ~
+
+- # Test case where nil values of Arrays are expected to be preserved
+  name: "Arrays with nil values"
+  original:
+    key:
+      - 5
+      - "hi"
+      - ~
+  modified:
+    key:
+      - ~
+      - 5
+      - "hi"
+      - ~
+  expected_removed: {}
+  expected_added:
+    key:
+      - ~
+
+- # Test case where nested Hashes and Arrays that are identical are
+  # expected to not show up as empty Hashes and Arrays in diffs.
+  name: "matching nested Hashes and Arrays"
+  original:
+    hash:
+      foo: "bar"
+    array:
+      - 1
+      - 2
+      - 3
+    extra: "apples"
+  modified:
+    hash:
+      foo: "bar"
+    array:
+      - 1
+      - 2
+      - 3
+    extra: "oranges"
+  expected_removed:
+    extra: "apples"
+  expected_added:
+    extra: "oranges"
+
+- # Test case where empty Hashes and Arrays that are added or removed
+  # are expected to show up in diffs.
+  name: "empty Hashes and Arrays"
+  original:
+    foo: "bar"
+  modified:
+    empty_hash: {}
+    empty_array: []
+    foo: "bar"
+  expected_removed: {}
+  expected_added:
+    empty_hash: {}
+    empty_array: []
+
+-
+  name: "empty Strings"
+  original:
+    possibly_empty_string: ""
+  modified:
+    possibly_empty_string: "not empty"
+  expected_removed:
+    possibly_empty_string: ""
+  expected_added:
+    possibly_empty_string: "not empty"
+
+- # Test case where Arrays containing Hashes are expected to not
+  # cause an error.
+  name: "Arrays containing Hashes"
+  original:
+    key:
+      -
+        c: "1"
+      -
+        a: "2"
+      -
+        a: "1"
+  modified:
+    key:
+      -
+        c: "1"
+      -
+        b: "2"
+      -
+        a: "1"
+  expected_removed:
+    key:
+      -
+        a: "2"
+  expected_added:
+    key:
+      -
+        b: "2"
+
+- # Test case where Arrays containing Hashes with nils are expected
+  # to not cause an error.
+  name: "Arrays containing Hashes with nils"
+  original:
+    key:
+      -
+        a: "1"
+        b: "2"
+      -
+        a: ~
+        c: "2"
+      -
+        e: "5"
+  modified:
+    key:
+      -
+        a: "1"
+        b: "2"
+      -
+        a: ~
+        c: "2"
+      -
+        d: "4"
+  expected_removed:
+    key:
+      -
+        e: "5"
+  expected_added:
+    key:
+      -
+        d: "4"
