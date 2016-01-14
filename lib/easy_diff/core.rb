@@ -41,9 +41,12 @@ module EasyDiff
         keys_in_common.each{ |key| original.delete(key) if easy_unmerge!(original[key], removed[key]).nil? }
       elsif original.is_a?(Array) && removed.is_a?(Array)
         original.reject!{ |e| removed.include?(e) }
-        original.sort_by! { |item|
-          item.is_a?(Hash) ? item.sort : item
-        }
+        begin
+          original.sort_by! { |item|
+            item.is_a?(Hash) ? item.sort : item
+          }
+        rescue
+        end
       elsif original == removed
         original = nil
       end
@@ -58,9 +61,12 @@ module EasyDiff
         added_keys.each{ |key| original[key] = easy_merge!(original[key], added[key])}
       elsif original.is_a?(Array) && added.is_a?(Array)
         original |=  added
-        original.sort_by! { |item|
-          item.is_a?(Hash) ? item.sort : item
-        }
+        begin
+          original.sort_by! { |item|
+            item.is_a?(Hash) ? item.sort : item
+          }
+        rescue
+        end
       else
         original = added.safe_dup
       end
