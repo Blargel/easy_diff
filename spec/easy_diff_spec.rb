@@ -45,23 +45,17 @@ describe EasyDiff do
       it "should be able to progress original hash to modified hash with no computed diffs" do
         removed, added = original.easy_diff modified
 
-        # Order shouldn't matter. Let's test for both.
-        progressed1 = original.easy_merge(added).easy_unmerge(removed)
-        progressed2 = original.easy_unmerge(removed).easy_merge(added)
+        progressed = original.easy_unmerge(removed).easy_merge(added)
 
-        modified.easy_diff(progressed1).should == no_diffs
-        modified.easy_diff(progressed2).should == no_diffs
+        modified.easy_diff(progressed).should == no_diffs
       end
 
       it "should be able to reverse modified hash to original hash with no computed diffs" do
         removed, added = original.easy_diff modified
 
-        # Order shouldn't matter. Let's test for both.
-        reversed1 = modified.easy_merge(removed).easy_unmerge(added)
-        reversed2 = modified.easy_unmerge(added).easy_merge(removed)
+        reversed = modified.easy_unmerge(added).easy_merge(removed)
 
-        original.easy_diff(reversed1).should == no_diffs
-        original.easy_diff(reversed2).should == no_diffs
+        original.easy_diff(reversed).should == no_diffs
       end
     end
   end
