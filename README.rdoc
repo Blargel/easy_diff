@@ -1,8 +1,8 @@
 = easy_diff
 
 Easy Diff enhances the functionality of Hash, allowing recursive diff, merge, and unmerge of arbitrarily constructed hashes.
-This is perfect for people who need to do diffs on not only plain text files but also data as Hash or JSON objects. Unmerge
-is included with diff and merge to more easily allow versioning of arbitrary data.
+This is perfect for people who need to do diffs on not only plain text files but also data as Hash or JSON objects.
+Unmerge is included with diff and merge to more easily allow versioning of arbitrary data.
 
 == Install
 
@@ -54,7 +54,7 @@ The first contains what has to be removed from self to create the second hash. T
 
 === Hash#easy_merge
 
-Takes a hash and recursively merges it with self. Arrays are merged by the union operation and then sorted. Arrays of Hashes are sorted by invoking +#sort+ on each Hash to make them comparable.
+Takes a hash and recursively merges it with self. Arrays are merged by concatenation.
 
 Using Hash#easy_merge! will modify self instead of returning a new hash.
 
@@ -90,8 +90,9 @@ Using Hash#easy_merge! will modify self instead of returning a new hash.
 
 === Hash#easy_unmerge
 
-Takes a hash and recursively unmerges it with self. By unmerging, I mean it will remove all matching values from
-the hash. All matching elements will be removed in arrays as well and then the arrays will be sorted.
+Takes a hash and recursively unmerges it with self. By unmerging, I mean it will remove all matching values from the hash.
+Arrays will be unmerged by removing matching values in a non-greedy manner (i.e. [1, 1, 1] unmerged with [1] is [1, 1] instead of []).
+
 Using Hash#easy_unmerge! will modify self instead of returning a new hash.
 
   original = {

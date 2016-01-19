@@ -47,9 +47,6 @@ module EasyDiff
         keys_in_common.each{ |key| original.delete(key) if easy_unmerge!(original[key], removed[key]).nil? }
       elsif original.is_a?(Array) && removed.is_a?(Array)
         subtract_arrays!(original, removed)
-        original.sort_by! { |item|
-          item.is_a?(Hash) ? item.sort : item
-        }
       elsif original == removed
         original = nil
       end
@@ -64,9 +61,6 @@ module EasyDiff
         added_keys.each{ |key| original[key] = easy_merge!(original[key], added[key])}
       elsif original.is_a?(Array) && added.is_a?(Array)
         original +=  added
-        original.sort_by! { |item|
-          item.is_a?(Hash) ? item.sort : item
-        }
       else
         original = added.safe_dup
       end
@@ -82,7 +76,7 @@ module EasyDiff
       (obj.is_a?(Hash) || obj.is_a?(Array)) && obj.empty?
     end
 
-    # The regular array difference does not handle duplicate values in the way that is needed for this library.
+    # Regular array difference does not handle duplicate values in the way that is needed for this library.
     # Examples:
     #   subtract_arrays([1, 1, 2, 3], [1, 2]) => [1, 3]
     #   subtract_arrays([3, 3, 3, 4], [3, 4, 5]) => [3, 3]
