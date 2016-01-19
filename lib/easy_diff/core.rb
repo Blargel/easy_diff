@@ -30,8 +30,8 @@ module EasyDiff
         end
 
       elsif original.is_a?(Array) && modified.is_a?(Array)
-        removed = original - modified
-        added   = modified - original
+        removed = subtract_arrays(original, modified)
+        added   = subtract_arrays(modified, original)
 
       elsif original != modified
         removed   = original
@@ -46,7 +46,7 @@ module EasyDiff
         keys_in_common = original.keys & removed.keys
         keys_in_common.each{ |key| original.delete(key) if easy_unmerge!(original[key], removed[key]).nil? }
       elsif original.is_a?(Array) && removed.is_a?(Array)
-        original.reject!{ |e| removed.include?(e) }
+        subtract_arrays!(original, removed)
         original.sort_by! { |item|
           item.is_a?(Hash) ? item.sort : item
         }
@@ -63,7 +63,7 @@ module EasyDiff
         added_keys = added.keys
         added_keys.each{ |key| original[key] = easy_merge!(original[key], added[key])}
       elsif original.is_a?(Array) && added.is_a?(Array)
-        original |=  added
+        original +=  added
         original.sort_by! { |item|
           item.is_a?(Hash) ? item.sort : item
         }
@@ -80,6 +80,24 @@ module EasyDiff
     # Can't use regular empty? because that affects strings.
     def self._empty?(obj)
       (obj.is_a?(Hash) || obj.is_a?(Array)) && obj.empty?
+    end
+
+    # The regular array difference does not handle duplicate values in the way that is needed for this library.
+    # Examples:
+    #   subtract_arrays([1, 1, 2, 3], [1, 2]) => [1, 3]
+    #   subtract_arrays([3, 3, 3, 4], [3, 4, 5]) => [3, 3]
+    # Shamelessly stolen from http://stackoverflow.com/questions/3852755/ruby-array-subtraction-without-removing-items-more-than-once
+    def self.subtract_arrays! arr1, arr2
+      counts = arr2.inject(Hash.new(0)) { |h, v| h[v] += 1; h }
+      arr1.reject! { |e| counts[e] -= 1 unless counts[e].zero? }
+    end
+
+    # Non-destructive version of above method.
+    def self.subtract_arrays arr1, arr2
+      cloned_arr1 = easy_clone(arr1)
+      subtract_arrays!(cloned_arr1, arr2)
+
+      cloned_arr1
     end
   end
 end
