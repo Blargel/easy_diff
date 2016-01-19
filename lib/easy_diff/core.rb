@@ -44,19 +44,21 @@ module EasyDiff
     def self.easy_unmerge!(original, removed)
       if original.is_a?(Hash) && removed.is_a?(Hash)
         keys_in_common = original.keys & removed.keys
-        keys_in_common.each{ |key| original.delete(key) if easy_unmerge!(original[key], removed[key]).nil? }
+        keys_in_common.each do |key|
+          if original[key] == removed[key]
+            original.delete(key)
+          else
+            easy_unmerge!(original[key], removed[key])
+          end
+        end
       elsif original.is_a?(Array) && removed.is_a?(Array)
         subtract_arrays!(original, removed)
-      elsif original == removed
-        original = nil
       end
       original
     end
 
     def self.easy_merge!(original, added)
-      if added.nil?
-        return original
-      elsif original.is_a?(Hash) && added.is_a?(Hash)
+      if original.is_a?(Hash) && added.is_a?(Hash)
         added_keys = added.keys
         added_keys.each{ |key| original[key] = easy_merge!(original[key], added[key])}
       elsif original.is_a?(Array) && added.is_a?(Array)

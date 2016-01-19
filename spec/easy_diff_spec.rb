@@ -11,12 +11,12 @@ describe EasyDiff do
     original = {
       "pos" => {:x => 1, :y => 2}
     }
+
     cloned = original.easy_clone
     cloned.should == original
 
     cloned["pos"].delete(:x)
-
-    original.easy_diff(cloned).should_not == no_diffs
+    cloned.should_not == original
   end
 
   # Tests that are dependent on the inputted data. Please edit or add
