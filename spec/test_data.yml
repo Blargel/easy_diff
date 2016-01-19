@@ -109,7 +109,8 @@
       - 5
       - "hi"
       - ~
-  expected_removed: {}
+  expected_removed:
+    key: []
   expected_added:
     key:
       - ~
@@ -122,7 +123,8 @@
   modified:
     key:
       - ~
-  expected_removed: {}
+  expected_removed:
+    key: []
   expected_added:
     key:
       - ~

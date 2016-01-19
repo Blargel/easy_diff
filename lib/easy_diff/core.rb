@@ -23,9 +23,9 @@ module EasyDiff
 
         keys_in_common.each do |key|
           r, a = easy_diff original[key], modified[key]
-          unless r.nil? && a.nil?
-            removed[key] = r unless _empty?(r)
-            added[key] = a unless _empty?(a)
+          unless _blank?(r) && _blank?(a)
+            removed[key] = r
+            added[key] = a
           end
         end
 
@@ -74,8 +74,12 @@ module EasyDiff
     end
 
     # Can't use regular empty? because that affects strings.
-    def self._empty?(obj)
-      (obj.is_a?(Hash) || obj.is_a?(Array)) && obj.empty?
+    def self._blank?(obj)
+      if obj.is_a?(Hash) || obj.is_a?(Array)
+        obj.empty?
+      else
+        obj.nil?
+      end
     end
 
     # Regular array difference does not handle duplicate values in the way that is needed for this library.
