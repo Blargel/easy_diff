@@ -4,16 +4,101 @@ Easy Diff enhances the functionality of Hash, allowing recursive diff, merge, an
 This is perfect for people who need to do diffs on not only plain text files but also data as Hash or JSON objects.
 Unmerge is included with diff and merge to more easily allow versioning of arbitrary data.
 
+There are a few caveats when using this gem:
+* Unmerge should be used before merge to properly transform one hash into another. It will still work in most cases if you don't, but some edge cases will break.
+* The order of elements within an array may be different when transforming one hash into another using unmerge and merge. There is currently no way to guarantee the order is untouched.
+
+== Quick Start Example
+
+  old_data = {
+    :id => 1,
+    :name => "Foo",
+    :tags => [
+      "pretend",
+      "i",
+      "am",
+      "good",
+      "at",
+      "examples"
+    ],
+    :config => {
+      :awesome => true,
+      :go_fast => false,
+      :actually_work => false
+    }
+  }
+
+  new_data = {
+    :id => 1,
+    :name => "Bar",
+    :description => "An awesome thingy I made."
+    :tags => [
+      "i",
+      "am",
+      "really",
+      "good"
+    ]
+    :config => {
+      :awesome => true,
+      :go_fast => true,
+      :actually_work => true
+    }
+  }
+
+  # Diff the two hashes to get what was removed and what was added.
+  removed, added = old_data.easy_diff(new_data)
+
+  # removed will equal
+  # {
+  #   :name => "Foo",
+  #   :tags => [
+  #     "pretend",
+  #     "at",
+  #     "examples"
+  #   ],
+  #   :config => {
+  #     :go_fast => false,
+  #     :actually_work => false
+  #   }
+  # }
+  #
+  #
+  # added will equal
+  # {
+  #   :name => "Bar",
+  #   :description => "An awesome thingy I made.",
+  #   :tags => [
+  #     "really"
+  #   ],
+  #   :config => {
+  #     :go_fast => true,
+  #     :actually_work => true
+  #   }
+  # }
+
+  # Now that we have the removed and added hashes, we can transform the old data into the new data or vice versa
+  transformed_old_data = old_data.easy_unmerge(added).easy_merge(removed)
+  transformed_new_data = new_data.easy_unmerge(removed).easy_merge(added)
+
+  # Let's see if there are any diffs between the transformed hashes and their respective counterparts
+
+  transformed_old_data.easy_diff(new_data)
+  #   => [{}, {}] # Two empty hashes, indicating no diffs.
+
+  transformed_new_data.easy_diff(old_data)
+  #   => [{}, {}] # Two empty hashes, indicating no diffs.
+
 == Install
 
   gem install easy_diff
 
-== Examples
+== Methods
 
 === Hash#easy_diff
 
-Takes another hash and recursively determines the differences between the two. This method returns two hashes.
+Takes another hash and recursively determines the differences between self and the other hash. This method returns two hashes.
 The first contains what has to be removed from self to create the second hash. The second contains what has to be added.
+When diffing arrays, the order of the arrays is ignored and only the contents are compared.
 
   original = {
     :tags => ['a', 'b', 'c'],
@@ -90,7 +175,7 @@ Using Hash#easy_merge! will modify self instead of returning a new hash.
 
 === Hash#easy_unmerge
 
-Takes a hash and recursively unmerges it with self. By unmerging, I mean it will remove all matching values from the hash.
+Takes a hash and recursively unmerges it with self. Unmerging means it will remove all matching values from the hash.
 Arrays will be unmerged by removing matching values in a non-greedy manner (i.e. [1, 1, 1] unmerged with [1] is [1, 1] instead of []).
 
 Using Hash#easy_unmerge! will modify self instead of returning a new hash.
