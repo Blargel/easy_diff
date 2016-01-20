@@ -31,13 +31,13 @@ There are a few caveats when using this gem:
   new_data = {
     :id => 1,
     :name => "Bar",
-    :description => "An awesome thingy I made."
+    :description => "An awesome thingy I made.",
     :tags => [
       "i",
       "am",
       "really",
       "good"
-    ]
+    ],
     :config => {
       :awesome => true,
       :go_fast => true,
@@ -77,8 +77,8 @@ There are a few caveats when using this gem:
   # }
 
   # Now that we have the removed and added hashes, we can transform the old data into the new data or vice versa
-  transformed_old_data = old_data.easy_unmerge(added).easy_merge(removed)
-  transformed_new_data = new_data.easy_unmerge(removed).easy_merge(added)
+  transformed_old_data = old_data.easy_unmerge(removed).easy_merge(added)
+  transformed_new_data = new_data.easy_unmerge(added).easy_merge(removed)
 
   # Let's see if there are any diffs between the transformed hashes and their respective counterparts
 
