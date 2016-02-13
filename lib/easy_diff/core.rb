@@ -1,6 +1,6 @@
 module EasyDiff
   module Core
-    def self.easy_diff(original, modified)
+    def self.easy_diff(original, modified, options={})
       removed = nil
       added   = nil
 
@@ -22,7 +22,7 @@ module EasyDiff
         keys_added.each{ |key| added[key] = modified[key].safe_dup }
 
         keys_in_common.each do |key|
-          r, a = easy_diff original[key], modified[key]
+          r, a = easy_diff original[key], modified[key], options
           unless _blank?(r) && _blank?(a)
             removed[key] = r
             added[key] = a
@@ -30,8 +30,8 @@ module EasyDiff
         end
 
       elsif original.is_a?(Array) && modified.is_a?(Array)
-        removed = subtract_arrays(original, modified)
-        added   = subtract_arrays(modified, original)
+        removed = subtract_arrays(original, modified, options)
+        added   = subtract_arrays(modified, original, options)
 
       elsif original != modified
         removed   = original
@@ -52,7 +52,7 @@ module EasyDiff
           end
         end
       elsif original.is_a?(Array) && removed.is_a?(Array)
-        subtract_arrays!(original, removed)
+        subtract_arrays!(original, removed, options)
       end
       original
     end
@@ -81,21 +81,27 @@ module EasyDiff
         obj.nil?
       end
     end
-
     # Regular array difference does not handle duplicate values in the way that is needed for this library.
     # Examples:
     #   subtract_arrays([1, 1, 2, 3], [1, 2]) => [1, 3]
     #   subtract_arrays([3, 3, 3, 4], [3, 4, 5]) => [3, 3]
     # Shamelessly stolen from http://stackoverflow.com/questions/3852755/ruby-array-subtraction-without-removing-items-more-than-once
-    def self.subtract_arrays! arr1, arr2
+    def self.subtract_arrays! arr1, arr2, options={}
       counts = arr2.inject(Hash.new(0)) { |h, v| h[v] += 1; h }
       arr1.reject! { |e| counts[e] -= 1 unless counts[e].zero? }
+      if options[:recurse_arrays] && arr1.map(&:class).uniq == [Hash] && arr2.map(&:class).uniq == [Hash]
+        arr1.each_with_index{|a,i|
+          if arr2[i]
+            arr1[i] = arr1[i].easy_diff(arr2[i], options)[0]
+          end
+        }
+      end
     end
 
     # Non-destructive version of above method.
-    def self.subtract_arrays arr1, arr2
+    def self.subtract_arrays arr1, arr2, options={}
       cloned_arr1 = easy_clone(arr1)
-      subtract_arrays!(cloned_arr1, arr2)
+      subtract_arrays!(cloned_arr1, arr2, options)
 
       cloned_arr1
     end
